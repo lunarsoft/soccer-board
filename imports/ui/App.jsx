@@ -32,9 +32,9 @@ export default class App extends Component {
       <div>
         <AppBar
           title = "Football"
-          iconClassNameRight = "muidocs-icon-navigation-expand-more"
+          //iconClassNameRight = "muidocs-icon-navigation-expand-more"
           onLeftIconButtonTouchTap = {this.handleMenuPanelToggle.bind(this)}
-          onRightIconButtonTouchTap = {this.handleNotificationPanelToggle.bind(this)}
+          //onRightIconButtonTouchTap = {this.handleNotificationPanelToggle.bind(this)}
           iconElementRight = {
             <IconButton
               onTouchTap = {this.handleNotificationPanelToggle.bind(this)}>

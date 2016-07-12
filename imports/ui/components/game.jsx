@@ -35,51 +35,59 @@ export default class Game extends Component {
       return a + ' ' + b;
     });
     const actions = [];
-
-    if (players.length < 2) {
-      if (this.props.game.createdById === Meteor.userId()) {
-        actions.push(<RaisedButton
-          primary = {true}
-          label = "Remove"
-          onTouchTap = {this.handleRemove.bind(this)}
-        />);
-      } else {
-        actions.push(<RaisedButton
-          primary = {true}
-          label = "Join"
-          onTouchTap = {this.handleJoin.bind(this)}
-        />);
-      }
-    } else {
-      const player1 = this.props.game.players.find(player => player._id === Meteor.userId());
-      const player2 = this.props.game.players.find(player => player._id !== Meteor.userId());
-
-      if (player1 !== undefined && player2 !== undefined) {
-        if (player1.status === '') {
-          actions.push(
-            <RaisedButton
-              primary = {true}
-              label = "Win"
-              onTouchTap = {this.handleWin.bind(this)}
-            />,
-            <RaisedButton
-              label = "Tie"
-              onTouchTap = {this.handleTie.bind(this)}
-            />,
-            <RaisedButton
-              secondary = {true}
-              label = "Defeat"
-              onTouchTap = {this.handleDefeat.bind(this)}
-            />
-          );
-        } else if (player2.status === '') {
-          actions.push(
-            <div>Waiting for {player2.username}.</div>
-          );
+    if (Meteor.user()) {
+      if (players.length < 2) {
+        if (this.props.game.createdById === Meteor.userId()) {
+          actions.push(<RaisedButton
+            key = {1}
+            primary = {true}
+            label = "Remove"
+            onTouchTap = {this.handleRemove.bind(this)}
+          />);
         } else {
-          actions.push(
-            <div>You {player1.status} this match.</div>
-          );
+          actions.push(<RaisedButton
+            key = {1}
+            primary = {true}
+            label = "Join"
+            onTouchTap = {this.handleJoin.bind(this)}
+          />);
+        }
+      } else {
+        const player1 = this.props.game.players.find(player => player._id === Meteor.userId());
+        const player2 = this.props.game.players.find(player => player._id !== Meteor.userId());
+
+        if (player1 !== undefined && player2 !== undefined) {
+          if (player1.status === '') {
+            actions.push(
+              <RaisedButton
+                key = {1}
+                primary = {true}
+                label = "Win"
+                onTouchTap = {this.handleWin.bind(this)}
+              />,
+              <RaisedButton
+                key = {2}
+                label = "Tie"
+                onTouchTap = {this.handleTie.bind(this)}
+              />,
+              <RaisedButton
+                key = {3}
+                secondary = {true}
+                label = "Defeat"
+                onTouchTap = {this.handleDefeat.bind(this)}
+              />
+            );
+          } else if (player2.status === '') {
+            actions.push(
+              <div
+                key = {1}>Waiting for {player2.username}.</div>
+            );
+          } else {
+            actions.push(
+              <div
+                key = {1}>You {player1.status} this match.</div>
+            );
+          }
         }
       }
     }

@@ -66,6 +66,20 @@ Meteor.methods({
   'games.join'(gameId) {
     check(gameId, String);
 
+    if (!this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    const game = Games.findOne(gameId);
+
+    if (game === undefined) {
+      throw new Meteor.Error('wrong-id');
+    }
+
+    if (game.players.length > 2) {
+      throw new Meteor.Error('game-full');
+    }
+
     Games.update(gameId, {$push: {
       players: {
         userId: this.userId,
