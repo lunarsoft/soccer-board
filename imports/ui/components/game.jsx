@@ -19,9 +19,7 @@ export default class Game extends Component {
   handleWin() {
     Meteor.call('games.updatePlayerStatus', this.props.game._id, Meteor.userId(), 'win');
   }
-  handleTie() {
-    Meteor.call('games.updatePlayerStatus', this.props.game._id, Meteor.userId(), 'tie');
-  }
+
   handleDefeat() {
     Meteor.call('games.updatePlayerStatus', this.props.game._id, Meteor.userId(), 'defeat');
   }
@@ -67,11 +65,6 @@ export default class Game extends Component {
               />,
               <RaisedButton
                 key = {2}
-                label = "Tie"
-                onTouchTap = {this.handleTie.bind(this)}
-              />,
-              <RaisedButton
-                key = {3}
                 secondary = {true}
                 label = "Defeat"
                 onTouchTap = {this.handleDefeat.bind(this)}
