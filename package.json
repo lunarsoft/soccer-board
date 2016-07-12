@@ -1,0 +1,25 @@
+{
+  "name": "soccer-board",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "glicko2": "^0.8.4",
+    "material-ui": "^0.15.0",
+    "meteor-node-stubs": "~0.2.0",
+    "react-router": "^2.5.1",
+    "react-tap-event-plugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "classnames": "^2.2.5",
+    "eslint": "^3.0.1",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-react": "^5.2.2",
+    "meteor-node-stubs": "~0.2.0",
+    "react": "^15.1.0",
+    "react-addons-pure-render-mixin": "^15.1.0",
+    "react-dom": "^15.1.0"
+  }
+}
