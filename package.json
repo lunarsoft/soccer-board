@@ -2,13 +2,16 @@
   "name": "soccer-board",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "lint": "./node_modules/.bin/eslint `find ./client ./imports ./server -regextype sed -regex '.*.jsx\\|.*.js'`"
+
   },
   "dependencies": {
     "glicko2": "^0.8.4",
     "material-ui": "^0.15.0",
     "meteor-node-stubs": "~0.2.0",
     "react-router": "^2.5.1",
+    "react-spinkit": "^1.1.8",
     "react-tap-event-plugin": "^1.0.0"
   },
   "devDependencies": {

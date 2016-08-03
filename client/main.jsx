@@ -15,6 +15,8 @@ import Ranking from '../imports/ui/views/ranking';
 import Home from '../imports/ui/views/home';
 import UserList from '../imports/ui/views/userList';
 import TournamentsList from '../imports/ui/views/tournamentsList';
+import NewTournament from '../imports/ui/views/newTournament';
+import TournamentDetail from '../imports/ui/views/tournamentDetail';
 import UserDetail from '../imports/ui/views/userDetail';
 import '../imports/startup/account-config';
 
@@ -34,7 +36,17 @@ Meteor.startup(() => {
             path = "games" component = {GamesList}
           />
           <Route
-            path = "tournaments" component = {TournamentsList}
+            path = "tournaments">
+            <IndexRoute
+              component = {TournamentsList}
+            />
+            <Route
+              path = ":id"
+              component = {TournamentDetail}
+            />
+          </Route>
+          <Route
+            path = "newTournament" component = {NewTournament}
           />
           <Route
             path = "ranking" component = {Ranking}

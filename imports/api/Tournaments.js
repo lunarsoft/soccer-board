@@ -2,12 +2,16 @@ import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import {check} from 'meteor/check';
 import {Users} from './Users';
+import {getTournamentClass, isTypeExist} from './torunamentTypes/tournamentTypes';
 
 export const Tournaments = new Mongo.Collection('tournaments', {
   transform: doc => {
     doc.createdBy = Users.findOne({
       _id: doc.createdById
     });
+    doc.players = doc.playersId.map(id => Users.findOne({
+      _id: id
+    }));
     return doc;
   }
 });
@@ -22,8 +26,11 @@ if (Meteor.isServer) {
 Meteor.methods({
   'tournaments.insert'(name, type) {
     check(name, String);
-    check(type, String);
+    check(type, Number);
 
+    if (!isTypeExist(type)) {
+      throw new Meteor.Error('tournament-type-incorrect');
+    }
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
@@ -33,10 +40,40 @@ Meteor.methods({
     Tournaments.insert({
       createdAt: new Date(),
       name,
-      type,
-      createdById: this.userId
+      typeId: type,
+      status: 'open',
+      createdById: this.userId,
+      playersId: []
     });
-    console.log(Tournaments.find({}).count());
+  },
+  'tournaments.join'(tournamentId) {
+    check(tournamentId, String);
+
+    if (!this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    const tournament = Tournaments.findOne(tournamentId);
+
+    if (tournament === undefined) {
+      throw new Meteor.Error('wrong-id');
+    }
+
+    if (tournament.status !== 'open') {
+      throw new Meteor.Error('tournament-closed');
+    }
+
+    if (tournament.playersId.length >= getTournamentClass(tournament.typeId).getTournamentClass) {
+      throw new Meteor.Error('tournament-full');
+    }
+
+    if (tournament.playersId.indexOf(this.userId) !== -1) {
+      throw new Meteor.Error('cannot-join');
+    }
+
+    Tournaments.update(tournamentId, {$push: {
+      playersId: this.userId,
+    }});
   },
   'tournaments.remove'(taskId) {
     check(taskId, String);
@@ -48,5 +85,13 @@ Meteor.methods({
     }
 
     tournament.remove(taskId);
+  },
+  'tournaments.start'(taskId) {
+    check(taskId, String);
+
+    const tournament = Tournaments.findOne(taskId);
+
+    console.log(tournament.typeId);
   }
+
 });

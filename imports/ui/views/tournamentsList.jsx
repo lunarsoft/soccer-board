@@ -1,11 +1,20 @@
 import {Meteor} from 'meteor/meteor';
 import React, {Component} from 'react';
-import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
-
+import {Link} from 'react-router';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import {createContainer} from 'meteor/react-meteor-data';
 
+import Tournament from '../components/tournament';
+
 import {Tournaments} from '../../api/Tournaments';
+
+const style = {
+  position: 'fixed',
+  right: 25,
+  bottom: 25
+};
 
 class TournamentsList extends Component {
   constructor(props) {
@@ -18,37 +27,33 @@ class TournamentsList extends Component {
 
   render() {
     return (
-      <Card>
-        <CardTitle
-          title = "Tournaments:"
-        />
-        <CardText>
-          {this.props.tournaments.map((tournament, key) =>
-            <Card
-              key = {key}
-              expanded = {false}>
-              <CardHeader
-                title = {tournament.name}
-                subtitle = {tournament.players.map(() => {})}
+      <div>
+        <Card>
+          <CardTitle
+            title = "Tournaments:"
+          />
+          <CardText>
+            {this.props.tournaments.map((tournament, key) =>
+              <Tournament
+                key = {key}
+                name = {tournament.name}
+                createdBy = {tournament.createdBy.username}
+                id = {tournament._id}
+                players = {tournament.players}
+                playersId = {tournament.playersId}
               />
-              <CardActions>
-                <div> You:</div>
-                <RaisedButton
-                  primary = {true}
-                  label = "Win"
-                />
-                <RaisedButton
-                  label = "Tie"
-                />
-                <RaisedButton
-                  secondary = {true}
-                  label = "Defeat"
-                />
-              </CardActions>
-            </Card>
-          )}
-        </CardText>
-      </Card>
+            )}
+          </CardText>
+        </Card>
+        <Link
+          to = "/newTournament">
+          <FloatingActionButton
+            secondary = {true}
+            style = {style}>
+            <ContentAdd />
+          </FloatingActionButton>
+        </Link>
+      </div>
     );
   }
 }

@@ -8,7 +8,6 @@ export default class UserRanking extends Component {
   }
 
   render() {
-    console.log(this.props.user);
     return (
       <ListItem
         leftAvatar = {
