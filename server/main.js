@@ -11,7 +11,7 @@ Meteor.startup(() => {
     user.tau = 0.5;
     user.vol = 0.06;
     user.rd = 200;
-
+    user.avatar = './img/avatar.png'
     // Don't forget to return the new user object at the end!
     return user;
   });

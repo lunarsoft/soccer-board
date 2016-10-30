@@ -5,7 +5,7 @@ export const Users = Meteor.users;
 
 if (Meteor.isServer) {
   Meteor.publish('users', function () {
-    return Users.find({}, {fields: {rating: 1, tau: 1, vol: 1, rd: 1}});
+    return Users.find({}, {fields: {rating: 1, tau: 1, vol: 1, rd: 1, avatar: 1}});
   });
 
 }

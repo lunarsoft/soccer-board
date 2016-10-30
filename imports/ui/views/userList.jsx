@@ -1,3 +1,4 @@
+import {Meteor} from 'meteor/meteor';
 import React, {Component} from 'react';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 import UserListItem from '../components/userListItem';
@@ -30,6 +31,7 @@ class Home extends Component {
                     key = {key}
                     id = {user._id}
                     name = {user.username}
+                    avatar = {user.avatar}
                   />
                 )
               }
@@ -41,7 +43,9 @@ class Home extends Component {
   }
 }
 export default createContainer(() => {
+  Meteor.subscribe('users');
+
   return {
-    users: Users.find({}, {sort: {username: -1}, fields: {username: 1, name: 1}}).fetch()
+    users: Users.find({}, {sort: {username: 1}}).fetch()
   };
 }, Home);

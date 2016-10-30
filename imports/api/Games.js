@@ -3,6 +3,7 @@ import {Mongo} from 'meteor/mongo';
 import {check} from 'meteor/check';
 import {Users} from './Users';
 import {Glicko2} from 'glicko2';
+import {Game} from './Schemas';
 
 export const Games = new Mongo.Collection('games', {
   transform: doc => {
@@ -21,6 +22,7 @@ export const Games = new Mongo.Collection('games', {
     return doc;
   }
 });
+Games.attachSchema(Game);
 
 const ranking = new Glicko2({
   tau: 0.5,
@@ -36,7 +38,8 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'games.insert'(name, tournamentId) {
+  'games.insert'(name, tournamentId, players) {
+    console.log(name,tournamentId,players)
     check(name, String);
 
     if (!this.userId) {
@@ -57,11 +60,19 @@ Meteor.methods({
       ],
       createdById: this.userId
     };
+
     if (tournamentId !== undefined) {
       game.tournamentId = tournamentId;
     }
 
-    Games.insert(game);
+    if (players) {
+      game.players = players.map(player => {return {userId: player, status: ''};});
+    }
+
+    console.log(game)
+    Games.insert(game, (error, result) => {
+      console.log(error, result)
+    });
   },
   'games.join'(gameId) {
     check(gameId, String);

@@ -10,7 +10,7 @@ export default class UserListItem extends Component {
         primaryText = {this.props.name}
         leftAvatar = {
           <Avatar
-            src = "images/ok-128.jpg"
+            src = {this.props.avatar}
           />
         }
       />

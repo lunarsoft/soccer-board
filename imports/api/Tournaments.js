@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import {check} from 'meteor/check';
+import {Tournament} from './Schemas'
 import {Users} from './Users';
 import {getTournamentClass, isTypeExist} from './torunamentTypes/tournamentTypes';
 
@@ -12,10 +13,13 @@ export const Tournaments = new Mongo.Collection('tournaments', {
     doc.players = doc.playersId.map(id => Users.findOne({
       _id: id
     }));
+    doc.isReady = doc.playersId.length === getTournamentClass(doc.typeId).playersLimit;
+
     return doc;
   }
 });
 
+Tournaments.attachSchema(Tournament);
 
 if (Meteor.isServer) {
   Meteor.publish('tournaments', function () {
@@ -44,6 +48,8 @@ Meteor.methods({
       status: 'open',
       createdById: this.userId,
       playersId: []
+    }, (error, result) => {
+      console.log(error, result);
     });
   },
   'tournaments.join'(tournamentId) {
@@ -86,12 +92,17 @@ Meteor.methods({
 
     tournament.remove(taskId);
   },
-  'tournaments.start'(taskId) {
-    check(taskId, String);
+  'tournaments.start'(tournamentId) {
+    check(tournamentId, String);
 
-    const tournament = Tournaments.findOne(taskId);
+    const tournament = Tournaments.findOne(tournamentId);
+    const TournamentClass = getTournamentClass(tournament.typeId);
 
-    console.log(tournament.typeId);
+    const tournamentObject = new TournamentClass(tournament.playersId)
+    tournamentObject.getMatches().forEach(match => {
+      console.log(match)
+      Meteor.call('games.insert', 'Tournament ' + tournament.name + ' game', tournament._id, match);
+    });
   }
 
 });

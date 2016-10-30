@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Spinner from 'react-spinkit';
 import {createContainer} from 'meteor/react-meteor-data';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {Tournaments} from '../../api/Tournaments';
 
@@ -19,6 +20,10 @@ class TournamentDetail extends Component {
     };
   }
 
+  handleStartTournament() {
+    Meteor.call('tournaments.start', this.props.tournament._id);
+  }
+
   render() {
     if (this.props.tournament === undefined) {
       return (
@@ -29,6 +34,7 @@ class TournamentDetail extends Component {
           />
         </Card>);
     }
+    console.log(this.props.tournament)
     return (
       <Card>
         <CardTitle
@@ -36,6 +42,12 @@ class TournamentDetail extends Component {
           subtitle = {'Status of the tournament: ' + this.props.tournament.status}
         />
         <CardText>
+          <p>Ready to start: {this.props.tournament.isReady.toString()}</p>
+          <RaisedButton
+            secondary = {true}
+            onTouchTap = {this.handleStartTournament.bind(this)}
+            label = "Start Tournament"
+          />
           <p>{'Player list: ' + this.props.tournament.players.reduce((result, user, index) => {
             if (index !== 0) {
               result += ', ';

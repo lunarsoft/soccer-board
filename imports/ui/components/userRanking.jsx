@@ -12,7 +12,7 @@ export default class UserRanking extends Component {
       <ListItem
         leftAvatar = {
           <Avatar
-            src = "images/ok-128.jpg"
+            src = {this.props.user.avatar}
           />
         }
         primaryText = {this.props.user.username}
