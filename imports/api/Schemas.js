@@ -53,7 +53,8 @@ export const Tournament = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id
   },
   createdAt: {
-    type: String
+    type: Date,
+    defaultValue: new Date()
   },
   winner: {
     type: String,
@@ -61,7 +62,8 @@ export const Tournament = new SimpleSchema({
     optional: true
   },
   playersId: {
-    type: [String]
+    type: [String],
+    defaultValue: []
   },
   status: {
     type: String,

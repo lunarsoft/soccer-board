@@ -42,12 +42,9 @@ Meteor.methods({
       throw new Meteor.Error('sss');
     }
     Tournaments.insert({
-      createdAt: new Date(),
       name,
       typeId: type,
-      status: 'open',
       createdById: this.userId,
-      playersId: []
     }, (error, result) => {
       console.log(error, result);
     });
