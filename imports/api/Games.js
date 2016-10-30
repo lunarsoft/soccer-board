@@ -39,23 +39,21 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'games.insert'(name, tournamentId, players) {
-    console.log(name,tournamentId,players)
     check(name, String);
 
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
+
     if (name.length === 0) {
       throw new Meteor.Error('name-to-short');
     }
 
     const game = {
-      createdAt: new Date(),
       name,
       players: [
         {
           userId: this.userId,
-          status: ''
         }
       ],
       createdById: this.userId
@@ -66,14 +64,14 @@ Meteor.methods({
     }
 
     if (players) {
-      game.players = players.map(player => {return {userId: player, status: ''};});
+      game.players = players.map(player => {return {userId: player};});
     }
 
-    console.log(game)
     Games.insert(game, (error, result) => {
-      console.log(error, result)
+      console.log(error, result);
     });
   },
+
   'games.join'(gameId) {
     check(gameId, String);
 

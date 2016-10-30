@@ -5,7 +5,8 @@ export const Game = new SimpleSchema({
     type: String
   },
   createdAt: {
-    type: String
+    type: Date,
+    defaultValue: new Date()
   },
   createdById: {
     type: String,
